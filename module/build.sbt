@@ -5,7 +5,7 @@ import scala.Some
 
 name := "play2-elasticsearch"
 
-version := "2.1-SNAPSHOT"
+version := "2.3"
 
 // DO NOT include a top-level directory in the outputting tgz file
 topLevelDirectory := None
@@ -17,7 +17,7 @@ scalaVersion := "2.11.7"
 libraryDependencies ++= Seq(
   javaCore,
   // Add your project dependencies here
-  "org.elasticsearch" % "elasticsearch" % "2.1.1",
+  "org.elasticsearch" % "elasticsearch" % "2.3.0",
   "org.codehaus.groovy" % "groovy-all" % "2.3.8",
   "org.apache.commons" % "commons-lang3" % "3.1",
   "org.easytesting" % "fest-assert" % "1.4" % "test",
@@ -40,12 +40,13 @@ publishArtifact in Test := false
 pomIncludeRepository := { _ => false }
 
 publishTo := {
-  val nexus = "https://oss.sonatype.org/"
   if (isSnapshot.value)
-    Some("snapshots" at nexus + "content/repositories/snapshots")
+    Some("Artifactory Realm" at "http://data.demandbase.com:8081/artifactory/sbt-snapshot-local;build.timestamp=" + new java.util.Date().getTime)
   else
-    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+    Some("Artifactory Realm"  at "http://data.demandbase.com:8081/artifactory/sbt-release-local")
 }
+
+credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
 licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT"))
 
